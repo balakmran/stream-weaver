@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ingester-service
+  threads:
+    virtual:
+      enabled: true # Enable Java 25 Virtual Threads
+
+  cloud:
+    # 1. AWS Global Config (Points to LocalStack)
+    aws:
+      region:
+        static: us-east-1
+      endpoint: http://localhost:4566 # Crucial for OrbStack/LocalStack
+      credentials:
+        access-key: test
+        secret-key: test
+      dynamodb:
+        enabled: true
+
+    # 2. Stream Binding Config
+    stream:
+      bindings:
+        # Maps the @Bean processEvent to the Kinesis Stream
+        processEvent-in-0:
+          destination: stream-weaver-events
+          group: weaver-consumer-group
+          consumer:
+            concurrency: 3 # Virtual threads make this cheap!
+
+      # 3. Kinesis Binder Config
+      kinesis:
+        binder:
+          auto-create-stream: false # We used Terraform for this
+          kpl-kcl-enabled: false    # Use standard binder for simplicity
+          checkpoint:
+            table: StreamWeaverMetadata
+          locks:
+            table: StreamWeaverLocks

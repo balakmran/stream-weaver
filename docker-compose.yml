@@ -1,0 +1,16 @@
+services:
+  ingester:
+    container_name: stream-weaver-app
+    image: ingester-service:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      # NETWORK CHANGE: 
+      # Since LocalStack is now "outside" (on your Mac host),
+      # we must use 'host.docker.internal' to reach it.
+      - SPRING_CLOUD_AWS_ENDPOINT=http://host.docker.internal:4566
+
+      - SPRING_CLOUD_AWS_REGION_STATIC=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - LOGGING_LEVEL_ROOT=INFO
