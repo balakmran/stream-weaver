@@ -60,7 +60,7 @@ localstack start -d
 2. Provision Resources
 
 Use tflocal to deploy the Kinesis Stream (stream-weaver-events) and DynamoDB tables
-(WeaverProcessedItems).
+(StreamWeaverMetadata, StreamWeaverLocks).
 
 ```shell
 cd infra/shared
@@ -104,24 +104,36 @@ push it to Kinesis.
 curl -X POST http://localhost:8080/api/v1/events/Hello-Native-World
 ```
 
-2. Check Persistence
+2. Check Logs
 
-Verify that the consumer picked up the event from Kinesis and saved it to the local DynamoDB table.
+Verify that the consumer picked up the event from Kinesis.
 
 ```shell
-awslocal dynamodb scan --table-name WeaverProcessedItems
+docker logs stream-weaver-app
 ```
 
 ## 📂 Project Structure
 
 ```text
 stream-weaver/
-├── docker-compose.yml       # Orchestrates the Native App
-├── settings.gradle.kts      # Monorepo Module Definitions
+├── build.gradle.kts                    # Root Build Logic
+├── gradle.properties                   # Project Config & JVM Args
+├── gradlew                             # Gradle Wrapper
+├── docker-compose.yml                  # Orchestrates the Native App
+├── settings.gradle.kts                 # Monorepo Module Definitions
 ├── infra/
-│   └── shared/              # Terraform for Kinesis/DynamoDB
+│   └── shared/                         # Terraform for Kinesis/DynamoDB
+│       ├── main.tf                     # Infrastructure Definition
+│       └── providers.tf                # Provider Configuration
 ├── libs/
-│   └── common-models/       # Shared Java 25 Records (DTOs)
+│   └── common-models/                  # Shared Java 25 Records (DTOs)
 └── services/
-└── ingester-service/        # Spring Boot 4 Application
+    └── ingester-service/               # Spring Boot 4 Application
+        ├── build.gradle.kts
+        └── src/main/
+            ├── java/.../ingest/
+            │   ├── api/                # HTTP Producer (REST)
+            │   └── consumer/           # Kinesis Consumer Bean
+            └── resources/
+                └── application.yaml    # App & Cloud Config
 ```
