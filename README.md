@@ -9,6 +9,8 @@ footprint.
 
 ## 🏗️ Architecture
 
+> 📖 See [docs/architecture.md](docs/architecture.md) for a detailed diagram and resource breakdown.
+
 - **Monorepo Structure**: Gradle-based monorepo managing shared libraries and microservices.
 - **Ingester Service**: A Spring Cloud Stream application acting as both a REST Producer and a Kinesis Consumer.
 - **Runtime**: Compiled to a Native Linux Executable via GraalVM for instant startup (<50ms).
@@ -56,7 +58,6 @@ Launch LocalStack in the background (detached mode).
 localstack start -d
 ```
 
-
 2. Provision Resources
 
 Use tflocal to deploy the Kinesis Stream (stream-weaver-events) and DynamoDB tables
@@ -97,11 +98,11 @@ Success Indicator: Look for a startup time of <0.1 seconds.
 
 1. Trigger the Flow
 
-Send a REST request to the Ingester Service. It will wrap the message in a WeaverEvent record and
+Send a REST request to the Ingester Service. It will wrap the message in an Event record and
 push it to Kinesis.
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/events/Hello-Native-World
+curl -X POST -H "Content-Type: application/json" -d '{"message": "Hello-Native-World"}' http://localhost:8080/api/v1/events
 ```
 
 2. Check Logs
@@ -117,10 +118,13 @@ docker logs stream-weaver-app
 ```text
 stream-weaver/
 ├── build.gradle.kts                    # Root Build Logic
+├── CONTRIBUTING.md                     # Dev Workflow & Guidelines
 ├── gradle.properties                   # Project Config & JVM Args
 ├── gradlew                             # Gradle Wrapper
 ├── docker-compose.yml                  # Orchestrates the Native App
 ├── settings.gradle.kts                 # Monorepo Module Definitions
+├── docs/                               # Documentation
+│   └── architecture.md                 # Architecture Diagrams
 ├── infra/
 │   └── shared/                         # Terraform for Kinesis/DynamoDB
 │       ├── main.tf                     # Infrastructure Definition
@@ -137,3 +141,16 @@ stream-weaver/
             └── resources/
                 └── application.yaml    # App & Cloud Config
 ```
+
+## 🤝 Contributing
+
+Want to modify the code? Check out [CONTRIBUTING.md](CONTRIBUTING.md) for the fast JVM-based development workflow.
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## ✍️ Author
+
+**Balakumaran Manoharan**
+- GitHub: [@balakmran](https://github.com/balakmran)
