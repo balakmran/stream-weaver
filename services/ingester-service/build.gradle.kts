@@ -68,6 +68,10 @@ tasks.withType<Test> {
     }
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    systemProperty("spring.profiles.active", "local")
+}
+
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
     // 1. Enable Native Compilation inside the buildpack
     environment.put("BP_NATIVE_IMAGE", "true")

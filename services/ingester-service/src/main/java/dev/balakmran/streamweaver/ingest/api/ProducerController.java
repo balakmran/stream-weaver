@@ -3,6 +3,7 @@ package dev.balakmran.streamweaver.ingest.api;
 import dev.balakmran.streamweaver.models.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,20 +15,21 @@ import java.util.UUID;
 public class ProducerController {
     private static final Logger log = LoggerFactory.getLogger(ProducerController.class);
     private final StreamBridge streamBridge;
+    private final String streamName;
 
-    public ProducerController(StreamBridge streamBridge) {
+    public ProducerController(StreamBridge streamBridge, @Value("${app.stream.destination}") String streamName) {
         this.streamBridge = streamBridge;
+        this.streamName = streamName;
     }
 
-    @PostMapping("/{message}")
-    public String publish(@PathVariable String message) {
+    @PostMapping
+    public String publish(@RequestBody PublishRequest request) {
         String id = UUID.randomUUID().toString();
-        Event event = new Event(id, message, Instant.now().toString());
+        Event event = new Event(id, request.message(), Instant.now());
 
         log.info("🚀 Publishing Event ID: {}", id);
 
-        // "stream-weaver-events" matches your Kinesis stream name
-        streamBridge.send("stream-weaver-events", event);
+        streamBridge.send(streamName, event);
 
         return "Published: " + id;
     }

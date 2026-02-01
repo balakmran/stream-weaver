@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    aws:
+      endpoint: ${AWS_ENDPOINT_URL:http://localhost:4566}
+      credentials:
+        access-key: test
+        secret-key: test
