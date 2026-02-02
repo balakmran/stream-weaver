@@ -12,7 +12,7 @@ resource "aws_kinesis_stream" "weaver_stream" {
 # 2. DynamoDB: Checkpoint Store
 # Tracks which messages have been "woven" (processed)
 resource "aws_dynamodb_table" "weaver_checkpoints" {
-  name         = "StreamWeaverMetadata"
+  name         = "StreamWeaverCheckpoints"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "metadataKey"
 
@@ -31,6 +31,19 @@ resource "aws_dynamodb_table" "weaver_locks" {
 
   attribute {
     name = "lockKey"
+    type = "S"
+  }
+}
+
+# 4. DynamoDB: Event Store
+# Stores the final processed events
+resource "aws_dynamodb_table" "weaved_events" {
+  name         = "WeavedEvents"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "eventId"
+
+  attribute {
+    name = "eventId"
     type = "S"
   }
 }
