@@ -1,7 +1,7 @@
 services:
   ingester:
     container_name: stream-weaver-app
-    image: ingester-service:0.0.1-SNAPSHOT
+    image: ingester-service:0.0.1
     ports:
       - "8080:8080"
     environment:

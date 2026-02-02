@@ -77,7 +77,7 @@ AOT (Ahead-of-Time) compilation.
 ```shell
 # From the project root
 cd services/ingester-service
-../../gradlew bootBuildImage --imageName=ingester-service:0.0.1-SNAPSHOT
+../../gradlew bootBuildImage --imageName=ingester-service:0.0.1
 ```
 
 ☕ Grab a coffee—this takes ~2-3 minutes as GraalVM analyzes reachability.
@@ -102,7 +102,9 @@ Send a REST request to the Ingester Service. It will wrap the message in an Even
 push it to Kinesis.
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d '{"message": "Hello-Native-World"}' http://localhost:8080/api/v1/events
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"message": "Hello-Native-World"}' \
+     http://localhost:8080/api/v1/events
 ```
 
 2. Check Logs

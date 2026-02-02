@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.balakmran"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 description = "ingester-service"
 
 java {
@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    // --- 1. Internal & Cloud ---
+    // Internal & Cloud
     implementation(project(":libs:common-models"))
     implementation("io.awspring.cloud:spring-cloud-aws-kinesis-stream-binder")
     implementation("io.awspring.cloud:spring-cloud-aws-starter-dynamodb")
