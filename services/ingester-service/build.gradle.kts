@@ -70,6 +70,7 @@ tasks.withType<Test> {
 
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     systemProperty("spring.profiles.active", "local")
+    systemProperty("spring.devtools.restart.enabled", "false")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
