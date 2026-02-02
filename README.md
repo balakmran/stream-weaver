@@ -61,7 +61,7 @@ localstack start -d
 2. Provision Resources
 
 Use tflocal to deploy the Kinesis Stream (stream-weaver-events) and DynamoDB tables
-(StreamWeaverMetadata, StreamWeaverLocks).
+(StreamWeaverCheckpoints, StreamWeaverLocks).
 
 ```shell
 cd infra/shared

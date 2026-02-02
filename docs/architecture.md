@@ -59,8 +59,8 @@ sequenceDiagram
 
 Defined in `infra/shared/main.tf`:
 
-| Resource           | Name                   | Purpose                                                    |
-|:-------------------|:-----------------------|:-----------------------------------------------------------|
-| **Kinesis Stream** | `stream-weaver-events` | Buffers incoming events from the producer API.             |
-| **DynamoDB Table** | `StreamWeaverMetadata` | Stores checkpoints for the Kinesis consumer binder.        |
-| **DynamoDB Table** | `StreamWeaverLocks`    | Manages distributed locks for consumer group coordination. |
+| Resource           | Name                      | Purpose                                                    |
+|:-------------------|:--------------------------|:-----------------------------------------------------------|
+| **Kinesis Stream** | `stream-weaver-events`    | Buffers incoming events from the producer API.             |
+| **DynamoDB Table** | `StreamWeaverCheckpoints` | Stores checkpoints for the Kinesis consumer binder.        |
+| **DynamoDB Table** | `StreamWeaverLocks`       | Manages distributed locks for consumer group coordination. |
